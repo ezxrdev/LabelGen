@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { LabelData, DEFAULT_LABEL_DATA } from './types';
 import { LabelEditor } from './components/LabelEditor';
 import { LabelPreview } from './components/LabelPreview';
@@ -9,32 +9,57 @@ import { CanvasExporter } from './utils/canvasExport';
 
 const App: React.FC = () => {
   const [labelData, setLabelData] = useState<LabelData>(DEFAULT_LABEL_DATA);
+  const [previewData, setPreviewData] = useState<LabelData>(DEFAULT_LABEL_DATA);
   const [isExporting, setIsExporting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const debounceRef = useRef<NodeJS.Timeout>();
 
-  const handleDataChange = (key: keyof LabelData, value: string) => {
+  // 实时更新输入框的值，但预览使用防抖
+  const handleDataChange = useCallback((key: keyof LabelData, value: string) => {
+    // 立即更新表单数据（保证连续输入）
     setLabelData(prev => ({ ...prev, [key]: value }));
-  };
+
+    // 防抖更新预览数据（保证性能）
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+    }
+
+    debounceRef.current = setTimeout(() => {
+      setPreviewData(prev => ({ ...prev, [key]: value }));
+    }, 300); // 300ms 防抖延迟
+  }, []);
+
+  // 清理防抖定时器
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
 
   const handleDownloadImage = async () => {
     setIsExporting(true);
     try {
+      // 确保使用最新数据进行导出
+      const currentData = labelData;
+
       const exporter = new CanvasExporter({
         width: 600,
         height: 400,
         padding: 48,
-        productName: labelData.productName,
-        productModel: labelData.productModel,
-        productionYear: labelData.productionYear,
-        companyName: labelData.companyName,
-        website: labelData.website,
-        address: labelData.address,
-        email: labelData.email,
-        qcStatus: labelData.qcStatus,
-        qcDate: labelData.qcDate
+        productName: currentData.productName,
+        productModel: currentData.productModel,
+        productionYear: currentData.productionYear,
+        companyName: currentData.companyName,
+        website: currentData.website,
+        address: currentData.address,
+        email: currentData.email,
+        qcStatus: currentData.qcStatus,
+        qcDate: currentData.qcDate
       });
 
-      exporter.downloadImage(`${labelData.productModel || 'label'}.png`);
+      exporter.downloadImage(`${currentData.productModel || 'label'}.png`);
     } catch (err) {
       console.error("Image export failed", err);
       setError("Failed to export image.");
@@ -46,22 +71,25 @@ const App: React.FC = () => {
   const handleDownloadPDF = async () => {
     setIsExporting(true);
     try {
+      // 确保使用最新数据进行导出
+      const currentData = labelData;
+
       const exporter = new CanvasExporter({
         width: 600,
         height: 400,
         padding: 48,
-        productName: labelData.productName,
-        productModel: labelData.productModel,
-        productionYear: labelData.productionYear,
-        companyName: labelData.companyName,
-        website: labelData.website,
-        address: labelData.address,
-        email: labelData.email,
-        qcStatus: labelData.qcStatus,
-        qcDate: labelData.qcDate
+        productName: currentData.productName,
+        productModel: currentData.productModel,
+        productionYear: currentData.productionYear,
+        companyName: currentData.companyName,
+        website: currentData.website,
+        address: currentData.address,
+        email: currentData.email,
+        qcStatus: currentData.qcStatus,
+        qcDate: currentData.qcDate
       });
 
-      await exporter.exportPDF(`${labelData.productModel || 'label'}.pdf`);
+      await exporter.exportPDF(`${currentData.productModel || 'label'}.pdf`);
     } catch (err) {
       console.error("PDF export failed", err);
       setError("Failed to export PDF.");
@@ -139,7 +167,7 @@ const App: React.FC = () => {
           <div className="mb-6 text-slate-400 text-xs font-bold uppercase tracking-[0.2em] no-print">Live Preview</div>
           
           <div className="shadow-2xl rounded-sm overflow-hidden bg-white">
-            <LabelPreview data={labelData} scale={1} />
+            <LabelPreview data={previewData} scale={1} />
           </div>
 
           <div className="mt-8 text-slate-500 text-xs max-w-md text-center no-print leading-relaxed">
