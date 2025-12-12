@@ -55,20 +55,24 @@ export class CanvasExporter {
   }
 
   private drawBorderAndGuides(): void {
-    // Draw outer label area with border - make it more prominent
+    // Center the 600x400 border in the 700x500 canvas
+    const borderX = (700 - 600) / 2; // 50px from left
+    const borderY = (500 - 400) / 2; // 50px from top
+
+    // Draw outer label area with border - perfectly centered
     this.ctx.fillStyle = '#ffffff';
-    this.ctx.fillRect(20, 20, 600, 400);
+    this.ctx.fillRect(borderX, borderY, 600, 400);
 
     // Draw main border with stronger visibility
     this.ctx.strokeStyle = '#6b7280'; // Darker gray for better visibility
     this.ctx.lineWidth = 2;
-    this.ctx.strokeRect(20, 20, 600, 400);
+    this.ctx.strokeRect(borderX, borderY, 600, 400);
 
-    // Draw cutting corner marks with stronger lines - positioned correctly at border edges
-    this.drawCornerMark(20, 20, true, true); // top-left
-    this.drawCornerMark(605, 20, true, false); // top-right (20 + 600 - 15)
-    this.drawCornerMark(20, 420, false, true); // bottom-left (20 + 400)
-    this.drawCornerMark(605, 420, false, false); // bottom-right (20 + 600 - 15, 20 + 400)
+    // Draw cutting corner marks with stronger lines - positioned correctly at centered border edges
+    this.drawCornerMark(borderX, borderY, true, true); // top-left
+    this.drawCornerMark(borderX + 585, borderY, true, false); // top-right (50 + 600 - 15)
+    this.drawCornerMark(borderX, borderY + 400, false, true); // bottom-left (50 + 400)
+    this.drawCornerMark(borderX + 585, borderY + 400, false, false); // bottom-right (50 + 600 - 15, 50 + 400)
   }
 
   private drawCornerMark(x: number, y: number, top: boolean, left: boolean): void {
@@ -134,9 +138,9 @@ export class CanvasExporter {
   }
 
   private async drawContent(): Promise<void> {
-    // Content area within border (20px offset from canvas edges, plus 48px padding)
-    const borderX = 20;
-    const borderY = 20;
+    // Content area within centered border
+    const borderX = (700 - 600) / 2; // 50px from left
+    const borderY = (500 - 400) / 2; // 50px from top
     const padding = 48;
     const contentWidth = 600;
     const contentHeight = 400;
