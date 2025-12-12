@@ -10,7 +10,7 @@
 ## 📸 效果示例
 
 <div align="center">
-  <img src="./label_example.png" alt="LabelGen Pro 示例图" width="600">
+  <img src="./label_example.png" alt="LabelGen Pro 示例图" width="400">
   <p><em>LabelGen Pro 生成的专业产品标签示例</em></p>
 </div>
 
@@ -201,16 +201,11 @@ this.ctx.fillStyle = '#your-custom-color';
 
 ## 📝 更新日志
 
-### v1.0.0 (2024-12)
+### v1.0.0 (2025-12)
 - ✨ 初始版本发布
 - 🏷️ 完整的标签编辑功能
 - 📤 高质量图片和 PDF 导出
 - 🎨 专业的工业风格设计
-- 🔧 移除 AI Auto-Fill 功能，专注于核心标签生成
-
-### 已移除功能
-- ❌ AI Auto-Fill：基于 Gemini Vision 的图片分析功能
-- ❌ 自动信息提取：相关依赖和服务已完全移除
 
 ## 📄 许可证
 
