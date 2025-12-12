@@ -1,6 +1,10 @@
 # LabelGen Pro
 
-一个专业级的标签生成器，支持高质量的产品标签创建、预览和导出。
+专业的产品标签生成器 | Professional Product Label Generator
+
+支持中文/英文标签设计，实时预览，高质量导出。适用于制造业质量控制标签打印。
+
+Supports Chinese/English label design with real-time preview and high-quality export. Ideal for manufacturing quality control label printing.
 
 ![LabelGen Pro](https://img.shields.io/badge/LabelGen-Pro-v1.0.0-blue.svg)
 ![React](https://img.shields.io/badge/React-19.2.1-blue.svg)

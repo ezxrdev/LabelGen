@@ -12,21 +12,109 @@ export const LabelPreview: React.FC<LabelPreviewProps> = ({ data, scale = 1 }) =
       id="label-preview-container"
       className="bg-white shadow-lg overflow-hidden relative print:shadow-none select-none"
       style={{
-        width: '600px',
-        height: '400px',
+        width: '700px', // Increased width for border and cutting lines
+        height: '500px', // Increased height for border and cutting lines
         transform: `scale(${scale})`,
         transformOrigin: 'top center',
-        border: '1px solid #94a3b8', // Slightly darker border for definition
-        padding: '48px',
+        backgroundColor: '#f8f9fa', // Light background for better visibility
+        padding: '20px', // Outer padding for border area
         fontFamily: "'Noto Sans SC', sans-serif",
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'space-between',
-        overflow: 'visible' // Changed from overflow-hidden to prevent clipping
+        justifyContent: 'center',
+        alignItems: 'center',
+        overflow: 'visible'
       }}
     >
-      {/* Top Section */}
-      <div className="flex justify-between items-start">
+      {/* Outer border with cutting guides */}
+      <div
+        style={{
+          width: '600px',
+          height: '400px',
+          backgroundColor: '#ffffff',
+          border: '2px solid #d1d5db', // Outer border
+          position: 'relative',
+          padding: '48px',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          overflow: 'hidden'
+        }}
+      >
+        {/* Cutting corner marks */}
+        <div style={{
+          position: 'absolute',
+          top: '0',
+          left: '0',
+          width: '15px',
+          height: '15px',
+          borderTop: '2px solid #374151',
+          borderLeft: '2px solid #374151'
+        }} />
+        <div style={{
+          position: 'absolute',
+          top: '0',
+          right: '0',
+          width: '15px',
+          height: '15px',
+          borderTop: '2px solid #374151',
+          borderRight: '2px solid #374151'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '0',
+          left: '0',
+          width: '15px',
+          height: '15px',
+          borderBottom: '2px solid #374151',
+          borderLeft: '2px solid #374151'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '0',
+          right: '0',
+          width: '15px',
+          height: '15px',
+          borderBottom: '2px solid #374151',
+          borderRight: '2px solid #374151'
+        }} />
+
+        {/* Optional cutting lines in middle of edges */}
+        <div style={{
+          position: 'absolute',
+          top: '-10px',
+          left: '15px',
+          right: '15px',
+          height: '10px',
+          backgroundImage: 'repeating-linear-gradient(90deg, #374151, #374151 5px, transparent 5px, transparent 10px)'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-10px',
+          left: '15px',
+          right: '15px',
+          height: '10px',
+          backgroundImage: 'repeating-linear-gradient(90deg, #374151, #374151 5px, transparent 5px, transparent 10px)'
+        }} />
+        <div style={{
+          position: 'absolute',
+          left: '-10px',
+          top: '15px',
+          bottom: '15px',
+          width: '10px',
+          backgroundImage: 'repeating-linear-gradient(0deg, #374151, #374151 5px, transparent 5px, transparent 10px)'
+        }} />
+        <div style={{
+          position: 'absolute',
+          right: '-10px',
+          top: '15px',
+          bottom: '15px',
+          width: '10px',
+          backgroundImage: 'repeating-linear-gradient(0deg, #374151, #374151 5px, transparent 5px, transparent 10px)'
+        }} />
+
+        {/* Top Section */}
+        <div className="flex justify-between items-start">
         {/* Product Info */}
         <div className="flex flex-col gap-6 pt-1 flex-1 min-w-0">
           {/* Product Name */}
@@ -128,6 +216,7 @@ export const LabelPreview: React.FC<LabelPreviewProps> = ({ data, scale = 1 }) =
              {/* Reserved for physical sticker */}
         </div>
 
+          </div>
       </div>
     </div>
   );
